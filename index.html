@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>ember markdown parser</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+  }
+  #input {
+    position: absolute;
+    width: 50%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+  }
+  #output {
+    position: absolute;
+    width: 50%;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    overflow: scroll;
+  }
+</style>
+</head>
+<body>
+<script type="text/x-handlebars">
+  {{textarea id="input" value=markdown}}
+  <div id="output">{{{html}}}</div>
+</script>
+
+<script src="http://emberjs.com.s3.amazonaws.com/getting-started/jquery.min.js"></script>
+<script src="http://emberjs.com.s3.amazonaws.com/getting-started/handlebars.js"></script>
+<script src="http://emberjs.com.s3.amazonaws.com/getting-started/ember.js"></script>
+<script src="http://emberjs.com.s3.amazonaws.com/getting-started/ember-data.js"></script>
+<script src="marked.js"></script>
+
+<script>
+  marked.setOptions({
+    gfm: true,
+    breaks: true
+  });
+
+  App = Ember.Application.create();
+
+  App.MarkdownParser = Ember.Object.extend({
+    // these will be supplied by `create`
+    markdown: null,
+    html: function() {
+      return marked(this.get('markdown'));
+    }.property('markdown')
+  });
+
+  App.ApplicationRoute = Ember.Route.extend({
+    model: function() {
+      return App.MarkdownParser.create({
+        markdown: "#something"
+      });
+    }
+  });
+</script>
+</body>
+</html>
+
