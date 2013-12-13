@@ -4,19 +4,19 @@
 <meta charset="utf-8">
 <title>ember markdown parser</title>
 <style>
+  #container {
+    width: 900px;
+    height: 500px;
+  }
   #input {
-    position: absolute;
     width: 49%;
-    top: 0;
-    bottom: 0;
-    left: 0;
+    height: 100%;
+    float: left;
   }
   #output {
-    position: absolute;
     width: 49%;
-    top: 0;
-    bottom: 0;
-    right: 0;
+    height: 100%;
+    float: right;
     overflow: scroll;
   }
 </style>
@@ -26,8 +26,10 @@
   {{markdown-editor value=myMarkdownPost}}
 </script>
 <script type="text/x-handlebars" id="components/markdown-editor">
-  {{textarea id="input" value=value}}
-  <div id="output">{{convert-markdown value}}</div>
+  <div id="container">
+    {{textarea id="input" value=value}}
+    <div id="output">{{convert-markdown value}}</div>
+  </div>
 </script>
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
