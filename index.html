@@ -23,14 +23,16 @@
 </head>
 <body>
 <script type="text/x-handlebars">
-  {{textarea id="input" value=markdown}}
-  <div id="output">{{{html}}}</div>
+  {{markdown-editor value=myMarkdownPost}}
+</script>
+<script type="text/x-handlebars" id="components/markdown-editor">
+  {{textarea id="input" value=value}}
+  <div id="output">{{convert-markdown value}}</div>
 </script>
 
-<script src="http://emberjs.com.s3.amazonaws.com/getting-started/jquery.min.js"></script>
-<script src="http://emberjs.com.s3.amazonaws.com/getting-started/handlebars.js"></script>
-<script src="http://emberjs.com.s3.amazonaws.com/getting-started/ember.js"></script>
-<script src="http://emberjs.com.s3.amazonaws.com/getting-started/ember-data.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="http://builds.handlebarsjs.com.s3.amazonaws.com/handlebars-v1.1.2.js"></script>
+<script src="http://builds.emberjs.com/tags/v1.2.0/ember.min.js"></script>
 <script src="marked.js"></script>
 
 <script>
@@ -41,19 +43,13 @@
 
   App = Ember.Application.create();
 
-  App.MarkdownParser = Ember.Object.extend({
-    // these will be supplied by `create`
-    markdown: null,
-    html: function() {
-      return marked(this.get('markdown'));
-    }.property('markdown')
+  Ember.Handlebars.helper('convert-markdown', function(markdown) {
+    return new Ember.Handlebars.SafeString(marked(markdown));
   });
 
   App.ApplicationRoute = Ember.Route.extend({
     model: function() {
-      return App.MarkdownParser.create({
-        markdown: "#something"
-      });
+      return { myMarkdownPost: "#something" };
     }
   });
 </script>
